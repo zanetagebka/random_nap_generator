@@ -80,6 +80,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     TableCalendar(
                       firstDay: DateTime.utc(2023, 1, 1),
                       lastDay: DateTime.utc(2023, 12, 31),
+                      headerStyle: const HeaderStyle(titleCentered: true,
+                      titleTextStyle: TextStyle(color: Colors.pink)),
+                      calendarStyle: const CalendarStyle(defaultTextStyle: TextStyle(color: Colors.pink),
+                      todayDecoration: BoxDecoration(color: Colors.purple, shape: BoxShape.circle),
+                      selectedDecoration: BoxDecoration(color: Colors.pink, shape: BoxShape.circle)),
                       focusedDay: _focusedDay,
                       calendarFormat: _calendarFormat,
                       selectedDayPredicate: (day) {
