@@ -151,63 +151,67 @@ class CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> addRandomNapEvent(DateTime selectedDay) async {
-    // Set the start and end time limits
     DateTime now = DateTime.now();
     DateTime startTimeLimit =
     DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 9, 0);
     DateTime endTimeLimit =
     DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 22, 0);
 
-    // Adjust start time if selected day is today
-    if (isSameDay(selectedDay, now)) {
-      if (now.hour > startTimeLimit.hour) {
-        startTimeLimit = DateTime(
-          selectedDay.year,
-          selectedDay.month,
-          selectedDay.day,
-          now.hour,
-          now.minute,
-        );
-      }
-    }
-
-    // Randomly select a time between the limits
-    DateTime startTime = startTimeLimit.add(Duration(
-      minutes: _random.nextInt(
-          (endTimeLimit.difference(startTimeLimit)).inMinutes),
-    ));
-
-    int duration = _random.nextInt(45) +
-        15; // Random duration in minutes (15-60)
-    DateTime endTime = startTime.add(Duration(minutes: duration));
-
-    // Check if the generated time is within the limit
-    if (startTime.isAfter(startTimeLimit) &&
-        endTime.isBefore(endTimeLimit) &&
-        startTime.isAfter(now)) {
-      String event = 'Nap (${duration}min)'; // Event with random duration
-
-      final Event addEvent = Event(
-        title: event,
-        description: 'This time I am going to take a nap!',
-        location: 'Home',
-        startDate: startTime,
-        endDate: endTime,
-        allDay: false,
-      );
-
-      try {
-        await Add2Calendar.addEvent2Cal(addEvent);
-        showEventAddedNotification();
-      } catch (e) {
-        // Handle exception
-        _showErrorDialog('An error occurred: $e');
-      }
-    } else {
+    if (selectedDay.isBefore(now) && !isSameDay(selectedDay, now)) {
+      _showErrorDialog('I am so sorry! We still do not know how to time travel. You cannot sleep in past. :)');
+    } else if (isSameDay(selectedDay, now) && now.hour > endTimeLimit.hour) {
       _showErrorDialog('It\'s too late to take a nap. You should go to bed!');
+    } else {
+      // Adjust start time if selected day is today
+      if (isSameDay(selectedDay, now)) {
+        if (now.hour > startTimeLimit.hour) {
+          startTimeLimit = DateTime(
+            selectedDay.year,
+            selectedDay.month,
+            selectedDay.day,
+            now.hour,
+            now.minute,
+          );
+        }
+      }
+
+      // Randomly select a time between the limits
+      DateTime startTime = startTimeLimit.add(Duration(
+        minutes: _random.nextInt(
+            (endTimeLimit.difference(startTimeLimit)).inMinutes),
+      ));
+
+      int duration = _random.nextInt(45) +
+          15; // Random duration in minutes (15-60)
+      DateTime endTime = startTime.add(Duration(minutes: duration));
+
+      // Check if the generated time is within the limit
+      if (startTime.isAfter(startTimeLimit) &&
+          endTime.isBefore(endTimeLimit) &&
+          startTime.isAfter(now)) {
+        String event = 'Nap (${duration}min)'; // Event with random duration
+
+        final Event addEvent = Event(
+          title: event,
+          description: 'This time I am going to take a nap!',
+          location: 'Home',
+          startDate: startTime,
+          endDate: endTime,
+          allDay: false,
+        );
+
+        try {
+          await Add2Calendar.addEvent2Cal(addEvent);
+          showEventAddedNotification();
+        } catch (e) {
+          // Handle exception
+          _showErrorDialog('An error occurred: $e');
+        }
+      } else if (isSameDay(selectedDay, now)) {
+        _showErrorDialog('It\'s too late to take a nap. You should go to bed!');
+      }
     }
   }
-
 
 
   void _showNoDaySelectedDialog() {
@@ -247,7 +251,7 @@ class CalendarScreenState extends State<CalendarScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('OK'),
+              child: const Text('Ohh :('),
             ),
           ],
         );
