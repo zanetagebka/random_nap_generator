@@ -16,7 +16,7 @@ void main() async {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   runApp(MaterialApp(
-    home: !isFirstTime
+    home: isFirstTime
         ? FirstTimeScreen(navigatorKey: navigatorKey)
         : CalendarApp(navigatorKey: navigatorKey),
   ));
@@ -50,10 +50,14 @@ class CalendarApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white), // Set text color
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: Colors.white,
+          // Add more specific text styles here
+        ),
       ),
       navigatorKey: navigatorKey,
-      home: CalendarScreen(),
+      home: const CalendarScreen(),
     );
   }
 }
+
