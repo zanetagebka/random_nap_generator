@@ -57,7 +57,7 @@ class FirstTimeScreen extends StatelessWidget {
       'Welcome here for the first time! You might be wondering why this app exists. Let me share the story with you...\n\n'
           'There are two reasons. Firstly - it is of course for learning purposes. I always thought that Flutter is a cool tool for creating apps and I always wanted to create something with it. Here we are! And I have more ideas (more useful too, do not worry).\n\n'
           'Secondly, this all began with a joke at work, and a wonder how people can randomly take a naps during the day... I decided to make this app a unique channel for expressing feelings that are hard to vocalize. For me, these mediums—technology, like this app, and music—became a way to articulate emotions that are challenging to express verbally. That\'s why I embarked on creating this small thing.\n\n'
-          'I sincerely hope this app brings you joy without causing any unintended distress with my words, and that you will see an honesty behind it all, but of course you can always tell me to...',
+          'I sincerely hope this app will brings you joy without causing any unintended distress with my words, and that you will see the message behind it, but of course you can always tell me to...',
       textAlign: TextAlign.center,
       style: TextStyle(
         color: Colors.lightBlueAccent,
