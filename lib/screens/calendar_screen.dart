@@ -85,11 +85,17 @@ class CalendarScreenState extends State<CalendarScreen> {
                   leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
                   rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
                   titleCentered: true,
-                  titleTextStyle: TextStyle(color: Colors.white),
-                  formatButtonTextStyle: TextStyle(color: Colors.white),
+                  titleTextStyle: TextStyle(color: Colors.white,
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.w500),
+                  formatButtonTextStyle: TextStyle(color: Colors.white,
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.w500),
                 ),
                 calendarStyle: const CalendarStyle(
-                  defaultTextStyle: TextStyle(color: Colors.white),
+                  defaultTextStyle: TextStyle(color: Colors.white,
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.w500),
                   todayDecoration: BoxDecoration(
                     color: Colors.blue,
                     shape: BoxShape.circle,
@@ -143,7 +149,9 @@ class CalendarScreenState extends State<CalendarScreen> {
       ),
       child: const Text(
         'Tell me when to nap!',
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: Colors.black,
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -221,7 +229,9 @@ class CalendarScreenState extends State<CalendarScreen> {
               },
               child: const Text(
                 'Sure!',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black,
+                fontFamily: 'Nunito',
+                fontWeight: FontWeight.w500),
               ),
             ),
           ],
@@ -243,7 +253,10 @@ class CalendarScreenState extends State<CalendarScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Ohh :('),
+              child: const Text('Ohh :(',
+              style: TextStyle(color: Colors.black,
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w500)),
             ),
           ],
         );
