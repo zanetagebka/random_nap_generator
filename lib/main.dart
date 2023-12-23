@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:random_nap_generator/screens/calendar_screen.dart';
-import 'package:random_nap_generator/screens/first_time_screen.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:random_nap_generator/screens/calendar_screen.dart';
+import 'package:random_nap_generator/screens/first_time_screen.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
@@ -25,14 +27,15 @@ void main() async {
 Future<void> initializeNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('@mipmap/ic_launcher');
+  final DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
+    requestSoundPermission: false,
+    requestBadgePermission: false,
+    requestAlertPermission: false,
+    onDidReceiveLocalNotification: (id, title, body, payload) async {},
+  );
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
-    iOS: DarwinInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-      onDidReceiveLocalNotification: (id, title, body, payload) async {},
-    ),
+    iOS: initializationSettingsIOS,
   );
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
@@ -40,8 +43,7 @@ Future<void> initializeNotifications() async {
 
 class CalendarApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-
-  const CalendarApp({Key? key, required this.navigatorKey}) : super(key: key);
+  const CalendarApp({super.key, required this.navigatorKey});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class CalendarApp extends StatelessWidget {
         ),
       ),
       navigatorKey: navigatorKey,
-      home: CalendarScreen(),
+      home: const CalendarScreen(),
     );
   }
 }

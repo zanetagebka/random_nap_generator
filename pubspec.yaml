@@ -14,9 +14,12 @@ dependencies:
   intl: ^0.18.1
   permission_handler: ^11.1.0
   table_calendar: ^3.0.9
-  add_2_calendar:
+  add_2_calendar: ^3.0.1
   flutter_local_notifications:
+  flutter_localizations:
+    sdk: flutter
   shared_preferences:
+  url_launcher:
 
 flutter_icons:
   image_path: 'assets/images/sleeping.png'
@@ -25,31 +28,19 @@ flutter_icons:
 
 dev_dependencies:
   flutter_launcher_icons:
+  intl_translation: ^0.18.0
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^3.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+  generate: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-  #   - images/a_dot_ham.jpeg
+    - lib/l10n/app_en.arb
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -74,5 +65,3 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages

@@ -4,7 +4,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:random_nap_generator/night_sky.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:random_nap_generator/screens/utils/night_sky.dart';
 import '../main.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -30,10 +32,11 @@ class CalendarScreenState extends State<CalendarScreen> {
   Future<void> showEventAddedNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
+      'channel id',
+      'Nap notification',
       importance: Importance.max,
       priority: Priority.high,
+      icon: '@mipmap/sleeping'
     );
     const NotificationDetails platformChannelSpecifics =
     NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -55,13 +58,8 @@ class CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime beginningOfYear = DateTime.now();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Random Nap Generator',
-          style: TextStyle(color: Colors.grey),
-        ),
         backgroundColor: Colors.black,
       ),
       body: Stack(
@@ -162,20 +160,16 @@ class CalendarScreenState extends State<CalendarScreen> {
     } else if (isSameDay(selectedDay, now) && now.hour > endTimeLimit.hour) {
       _showErrorDialog('It\'s too late to take a nap. You should go to bed!');
     } else {
-      // Adjust start time if selected day is today
-      if (isSameDay(selectedDay, now)) {
-        if (now.hour > startTimeLimit.hour) {
-          startTimeLimit = DateTime(
-            selectedDay.year,
-            selectedDay.month,
-            selectedDay.day,
-            now.hour,
-            now.minute,
-          );
-        }
+      if (isSameDay(selectedDay, now) && now.hour > startTimeLimit.hour) {
+        startTimeLimit = DateTime(
+          selectedDay.year,
+          selectedDay.month,
+          selectedDay.day,
+          now.hour,
+          now.minute,
+        );
       }
 
-      // Randomly select a time between the limits
       DateTime startTime = startTimeLimit.add(Duration(
         minutes: _random.nextInt(
             (endTimeLimit.difference(startTimeLimit)).inMinutes),
@@ -189,7 +183,7 @@ class CalendarScreenState extends State<CalendarScreen> {
       if (startTime.isAfter(startTimeLimit) &&
           endTime.isBefore(endTimeLimit) &&
           startTime.isAfter(now)) {
-        String event = 'Nap (${duration}min)'; // Event with random duration
+        String event = 'Nap (${duration}min)';
 
         final Event addEvent = Event(
           title: event,
@@ -204,7 +198,6 @@ class CalendarScreenState extends State<CalendarScreen> {
           await Add2Calendar.addEvent2Cal(addEvent);
           showEventAddedNotification();
         } catch (e) {
-          // Handle exception
           _showErrorDialog('An error occurred: $e');
         }
       } else if (isSameDay(selectedDay, now)) {
@@ -212,7 +205,6 @@ class CalendarScreenState extends State<CalendarScreen> {
       }
     }
   }
-
 
   void _showNoDaySelectedDialog() {
     showDialog(

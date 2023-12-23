@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:random_nap_generator/screens/calendar_screen.dart';
-import 'package:random_nap_generator/night_sky.dart';
+import 'package:random_nap_generator/screens/utils/night_sky.dart';
 
 class FirstTimeScreen extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -23,15 +25,18 @@ class FirstTimeScreen extends StatelessWidget {
       children: [
         const NightSky(),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildHeaderText(),
-                const SizedBox(height: 40),
-                _buildMainText(),
-                const Spacer(),
+                _buildHeaderText(context),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: _buildMainText(),
+                  ),
+                ),
                 _buildShutUpButton(context),
               ],
             ),
@@ -41,10 +46,10 @@ class FirstTimeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderText() {
-    return const Text(
-      'Hello!',
-      style: TextStyle(
+  Widget _buildHeaderText(BuildContext context) {
+    return Text(
+      AppLocalizations.of(context)?.hello ?? '',
+      style: const TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: Colors.lightBlueAccent,
