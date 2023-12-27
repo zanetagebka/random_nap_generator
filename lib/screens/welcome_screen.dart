@@ -4,42 +4,46 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'first_time_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  WelcomeScreenState createState() => WelcomeScreenState();
+}
+
+class WelcomeScreenState extends State<WelcomeScreen> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  WelcomeScreen({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _redirect();
+  }
+
+  Future<void> _redirect() async {
+    await Future.delayed(const Duration(seconds: 2));
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('first_time') ?? true;
+
+    if (!context.mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => isFirstTime
+            ? FirstTimeScreen(navigatorKey: navigatorKey)
+            : CalendarApp(navigatorKey: navigatorKey),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    Future<void> navigate(bool isFirstTime, BuildContext context) async {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => !isFirstTime
-              ? FirstTimeScreen(navigatorKey: navigatorKey)
-              : CalendarApp(navigatorKey: navigatorKey),
-        ),
-      );
-    }
-
-    // Simulating a delay before redirection
-    Future.delayed(const Duration(seconds: 2), () async {
-      WidgetsFlutterBinding.ensureInitialized();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool isFirstTime = prefs.getBool('first_time') ?? true;
-
-      navigate(isFirstTime, context);
-    });
-
     return MaterialApp(
       title: 'Random Nap Generator',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: Theme.of(context).textTheme.apply(
-          bodyColor: Colors.white,
-          // Add more specific text styles here
-        ),
+        // Your theme configurations
       ),
       home: Scaffold(
         body: Container(
@@ -74,5 +78,3 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
-
-

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:random_nap_generator/screens/calendar_screen.dart';
-import 'package:random_nap_generator/screens/utils/night_sky.dart';
 
 class FirstTimeScreen extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -23,7 +22,6 @@ class FirstTimeScreen extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Stack(
       children: [
-        NightSky(), // Replace this with your NightSky widget
         Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -102,6 +100,9 @@ class FirstTimeScreen extends StatelessWidget {
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('first_time', false);
+
+        if (!context.mounted) return;
+
         _navigateToCalendar(context);
       },
       child: const Text(
@@ -116,8 +117,7 @@ class FirstTimeScreen extends StatelessWidget {
   }
 
   void _navigateToCalendar(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const CalendarScreen()),
     );
   }
