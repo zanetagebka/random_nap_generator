@@ -95,7 +95,7 @@ class FirstTimeScreen extends StatelessWidget {
   Widget _buildShutUpButton(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.lightBlue,
       ),
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -108,7 +108,7 @@ class FirstTimeScreen extends StatelessWidget {
       child: const Text(
         'Shut up :)',
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
           fontFamily: 'Nunito',
           fontWeight: FontWeight.w500,
         ),
