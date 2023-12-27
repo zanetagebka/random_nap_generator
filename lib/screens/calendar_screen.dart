@@ -1,13 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:random_nap_generator/screens/utils/night_sky.dart';
-import '../main.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -18,6 +15,7 @@ class CalendarScreen extends StatefulWidget {
 
 class CalendarScreenState extends State<CalendarScreen> {
   bool _calendarPermissionGranted = false;
+
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -29,31 +27,31 @@ class CalendarScreenState extends State<CalendarScreen> {
     _checkCalendarPermission();
   }
 
-  Future<void> showEventAddedNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-      'channel id',
-      'Nap notification',
-      importance: Importance.max,
-      priority: Priority.high,
-      icon: '@mipmap/sleeping'
-    );
-    const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Event Added',
-      'Your nap event has been added to the calendar!',
-      platformChannelSpecifics,
-      payload: 'item x',
-    );
-  }
-
   Future<void> _checkCalendarPermission() async {
-    final PermissionStatus status = await Permission.calendar.status;
+    final PermissionStatus status = await Permission.calendarFullAccess.request();
     setState(() {
       _calendarPermissionGranted = status == PermissionStatus.granted;
     });
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Permission Denied'),
+          content: const Text('Calendar access is required for this feature.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -137,10 +135,12 @@ class CalendarScreenState extends State<CalendarScreen> {
   Widget _buildNapButton() {
     return ElevatedButton(
       onPressed: () async {
-        if (_selectedDay != null) {
+        if (_selectedDay != null && _calendarPermissionGranted) {
           await addRandomNapEvent(_selectedDay!);
           setState(() {});
-        } else {
+        } else if (_selectedDay != null && !_calendarPermissionGranted) {
+          _showPermissionDeniedDialog();
+      } else {
           _showNoDaySelectedDialog();
         }
       },
@@ -204,7 +204,6 @@ class CalendarScreenState extends State<CalendarScreen> {
 
         try {
           await Add2Calendar.addEvent2Cal(addEvent);
-          showEventAddedNotification();
         } catch (e) {
           _showErrorDialog('An error occurred: $e');
         }
