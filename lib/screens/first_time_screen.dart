@@ -1,6 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:random_nap_generator/screens/calendar_screen.dart';
 import 'package:random_nap_generator/screens/utils/night_sky.dart';
@@ -23,22 +23,30 @@ class FirstTimeScreen extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Stack(
       children: [
-        const NightSky(),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildHeaderText(context),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: _buildMainText(),
+        NightSky(), // Replace this with your NightSky widget
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/sky-full-moon.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildHeaderText(context),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: _buildMainText(),
+                    ),
                   ),
-                ),
-                _buildShutUpButton(context),
-              ],
+                  _buildShutUpButton(context),
+                ],
+              ),
             ),
           ),
         ),
@@ -49,27 +57,52 @@ class FirstTimeScreen extends StatelessWidget {
   Widget _buildHeaderText(BuildContext context) {
     return const Text(
       'Hello!',
-      style:  TextStyle(
+      style: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: Colors.lightBlueAccent,
-        fontFamily: 'Nunito'
+        fontFamily: 'Nunito',
       ),
     );
   }
 
+
   Widget _buildMainText() {
-    return const Text(
-      'Welcome here for the first time! You might be wondering why this app exists. Let me share the story with you...\n\n'
-          'There are two reasons. Firstly - it is of course for learning purposes. I always thought that Flutter is a cool tool for creating apps and I always wanted to create something with it. Here we are! And I have more ideas (more useful too, do not worry).\n\n'
-          'Secondly, this all began with a joke at work, and a wonder how people can randomly take a naps during the day... I decided to make this app a unique channel for expressing feelings that are hard to vocalize. For me, these mediums—technology, like this app, and music—became a way to articulate emotions that are challenging to express verbally. That\'s why I embarked on creating this small thing.\n\n'
-          'I sincerely hope this app will brings you nothing but joy, but of course you can always tell me to...',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.lightBlueAccent,
-        fontSize: 15,
-        fontFamily: 'Nunito',
-        fontWeight: FontWeight.w500
+    return Container(
+      margin: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 10.0,
+            spreadRadius: 2.0,
+          ),
+        ],
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.3), // Adjust opacity for glass effect
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: const Text(
+            'Welcome here for the first time! You might be wondering why this app exists. Let me share the story with you...\n\n'
+                'There are two reasons. Firstly - it is of course for learning purposes. I always thought that Flutter is a cool tool for creating apps and I always wanted to create something with it. Here we are! And I have more ideas (more useful too, do not worry).\n\n'
+                'Secondly, this all began with a joke at work, and a wonder how people can randomly take a naps during the day... I decided to make this app a unique channel for expressing feelings that are hard to vocalize. For me, these mediums—technology, like this app, and music—became a way to articulate emotions that are challenging to express verbally. That\'s why I embarked on creating this small thing.\n\n'
+                'I sincerely hope this app will brings you nothing but joy, but of course you can always tell me to...',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.lightBlueAccent,
+              fontSize: 15,
+              fontFamily: 'Nunito',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -77,7 +110,7 @@ class FirstTimeScreen extends StatelessWidget {
   Widget _buildShutUpButton(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.black,
       ),
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,9 +119,11 @@ class FirstTimeScreen extends StatelessWidget {
       },
       child: const Text(
         'Shut up :)',
-        style: TextStyle(color: Colors.black,
-            fontFamily: 'Nunito',
-            fontWeight: FontWeight.w500),
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'Nunito',
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
