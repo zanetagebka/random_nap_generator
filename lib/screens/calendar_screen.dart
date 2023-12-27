@@ -149,7 +149,7 @@ class CalendarScreenState extends State<CalendarScreen> {
       ),
       child: const Text(
         'Tell me when to nap!',
-        style: TextStyle(color: Colors.black,
+        style: TextStyle(color: Colors.white,
             fontWeight: FontWeight.w500),
       ),
     );
@@ -157,10 +157,8 @@ class CalendarScreenState extends State<CalendarScreen> {
 
   Future<void> addRandomNapEvent(DateTime selectedDay) async {
     DateTime now = DateTime.now();
-    DateTime startTimeLimit =
-    DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 9, 0);
-    DateTime endTimeLimit =
-    DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 22, 0);
+    DateTime startTimeLimit = DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 9, 0);
+    DateTime endTimeLimit = DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 22, 0);
 
     if (selectedDay.isBefore(now) && !isSameDay(selectedDay, now)) {
       _showErrorDialog('I am so sorry! We still do not know how to time travel. You cannot sleep in past. :)');
@@ -168,49 +166,43 @@ class CalendarScreenState extends State<CalendarScreen> {
       _showErrorDialog('It\'s too late to take a nap. You should go to bed!');
     } else {
       if (isSameDay(selectedDay, now) && now.hour > startTimeLimit.hour) {
-        startTimeLimit = DateTime(
-          selectedDay.year,
-          selectedDay.month,
-          selectedDay.day,
-          now.hour,
-          now.minute,
-        );
+        startTimeLimit = DateTime(selectedDay.year, selectedDay.month, selectedDay.day, now.hour, now.minute);
       }
 
-      DateTime startTime = startTimeLimit.add(Duration(
-        minutes: _random.nextInt(
-            (endTimeLimit.difference(startTimeLimit)).inMinutes),
-      ));
+      int maxDuration = 45;
+      int durationRange = endTimeLimit.difference(startTimeLimit).inMinutes;
 
-      int duration = _random.nextInt(45) +
-          15; // Random duration in minutes (15-60)
-      DateTime endTime = startTime.add(Duration(minutes: duration));
+      if (durationRange <= 0 || durationRange < maxDuration) {
+        _showErrorDialog('It\'s too late. You should go to bed! :)');
+      } else {
+        int duration = _random.nextInt(maxDuration) + 15; // Random duration in minutes (15-45)
+        DateTime startTime = startTimeLimit.add(Duration(minutes: duration));
+        DateTime endTime = startTime.add(Duration(minutes: duration));
 
-      // Check if the generated time is within the limit
-      if (startTime.isAfter(startTimeLimit) &&
-          endTime.isBefore(endTimeLimit) &&
-          startTime.isAfter(now)) {
-        String event = 'Nap (${duration}min)';
+        if (startTime.isAfter(now) && endTime.isBefore(endTimeLimit)) {
+          String event = 'Nap (${duration}min)';
 
-        final Event addEvent = Event(
-          title: event,
-          description: 'This time I am going to take a nap!',
-          location: 'Home',
-          startDate: startTime,
-          endDate: endTime,
-          allDay: false,
-        );
+          final Event addEvent = Event(
+            title: event,
+            description: 'This time I am going to take a nap!',
+            location: 'Home',
+            startDate: startTime,
+            endDate: endTime,
+            allDay: false,
+          );
 
-        try {
-          await Add2Calendar.addEvent2Cal(addEvent);
-        } catch (e) {
-          _showErrorDialog('An error occurred: $e');
+          try {
+            await Add2Calendar.addEvent2Cal(addEvent);
+          } catch (e) {
+            _showErrorDialog('An error occurred: $e');
+          }
+        } else if (isSameDay(selectedDay, now)) {
+          _showErrorDialog('It\'s too late. You should go to bed! :)');
         }
-      } else if (isSameDay(selectedDay, now)) {
-        _showErrorDialog('It\'s too late to take a nap. You should go to bed!');
       }
     }
   }
+
 
   void _showNoDaySelectedDialog() {
     showDialog(
@@ -227,7 +219,7 @@ class CalendarScreenState extends State<CalendarScreen> {
               },
               child: const Text(
                 'Sure!',
-                style: TextStyle(color: Colors.white,
+                style: TextStyle(color: Colors.black,
                 fontWeight: FontWeight.w500),
               ),
             ),
