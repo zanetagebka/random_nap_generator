@@ -83,7 +83,6 @@ class FirstTimeScreen extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontFamily: 'Nunito',
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -109,7 +108,6 @@ class FirstTimeScreen extends StatelessWidget {
         'Shut up :)',
         style: TextStyle(
           color: Colors.black,
-          fontFamily: 'Nunito',
           fontWeight: FontWeight.w500,
         ),
       ),

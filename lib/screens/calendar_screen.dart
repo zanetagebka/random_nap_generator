@@ -39,6 +39,7 @@ class CalendarScreenState extends State<CalendarScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.lightBlue,
           title: const Text('Permission Denied'),
           content: const Text('Calendar access is required for this feature.'),
           actions: [
@@ -46,7 +47,9 @@ class CalendarScreenState extends State<CalendarScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: const Text('OK',
+                  style: TextStyle(color: Colors.white,
+                      fontWeight: FontWeight.w500)),
             ),
           ],
         );
@@ -84,15 +87,12 @@ class CalendarScreenState extends State<CalendarScreen> {
                   rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
                   titleCentered: true,
                   titleTextStyle: TextStyle(color: Colors.white,
-                      fontFamily: 'Nunito',
                       fontWeight: FontWeight.w500),
                   formatButtonTextStyle: TextStyle(color: Colors.white,
-                      fontFamily: 'Nunito',
                       fontWeight: FontWeight.w500),
                 ),
                 calendarStyle: const CalendarStyle(
                   defaultTextStyle: TextStyle(color: Colors.white,
-                      fontFamily: 'Nunito',
                       fontWeight: FontWeight.w500),
                   todayDecoration: BoxDecoration(
                     color: Colors.blue,
@@ -150,7 +150,6 @@ class CalendarScreenState extends State<CalendarScreen> {
       child: const Text(
         'Tell me when to nap!',
         style: TextStyle(color: Colors.black,
-            fontFamily: 'Nunito',
             fontWeight: FontWeight.w500),
       ),
     );
@@ -228,8 +227,7 @@ class CalendarScreenState extends State<CalendarScreen> {
               },
               child: const Text(
                 'Sure!',
-                style: TextStyle(color: Colors.black,
-                fontFamily: 'Nunito',
+                style: TextStyle(color: Colors.white,
                 fontWeight: FontWeight.w500),
               ),
             ),
@@ -253,8 +251,7 @@ class CalendarScreenState extends State<CalendarScreen> {
                 Navigator.pop(context);
               },
               child: const Text('Ohh :(',
-              style: TextStyle(color: Colors.black,
-                  fontFamily: 'Nunito',
+              style: TextStyle(color: Colors.white,
                   fontWeight: FontWeight.w500)),
             ),
           ],

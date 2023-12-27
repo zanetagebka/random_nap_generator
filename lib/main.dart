@@ -10,7 +10,7 @@ FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: WelcomeScreen()
   ));
 }
@@ -41,6 +41,7 @@ class CalendarApp extends StatelessWidget {
     return MaterialApp(
       title: 'Random Nap Generator',
       theme: ThemeData(
+        fontFamily: 'Nunito',
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: Theme.of(context).textTheme.apply(
