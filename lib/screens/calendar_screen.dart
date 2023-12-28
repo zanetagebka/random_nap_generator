@@ -161,7 +161,7 @@ class CalendarScreenState extends State<CalendarScreen> {
     DateTime endTimeLimit = DateTime(selectedDay.year, selectedDay.month, selectedDay.day, 22, 0);
 
     if (selectedDay.isBefore(now) && !isSameDay(selectedDay, now)) {
-      _showErrorDialog('I am so sorry! We still do not know how to time travel. You cannot sleep in past. :)');
+      _showErrorDialog('I am so sorry! We still do not know how to time travel. You cannot sleep in the past. :)');
     } else if (isSameDay(selectedDay, now) && now.hour > endTimeLimit.hour) {
       _showErrorDialog('It\'s too late to take a nap. You should go to bed!');
     } else {
@@ -173,14 +173,20 @@ class CalendarScreenState extends State<CalendarScreen> {
       int durationRange = endTimeLimit.difference(startTimeLimit).inMinutes;
 
       if (durationRange <= 0 || durationRange < maxDuration) {
-        _showErrorDialog('It\'s too late. You should go to bed! :)');
+        _showErrorDialog('Something went wrong. Please try again.');
       } else {
         int duration = _random.nextInt(maxDuration) + 15; // Random duration in minutes (15-45)
-        DateTime startTime = startTimeLimit.add(Duration(minutes: duration));
+        DateTime startTime = DateTime(
+          selectedDay.year,
+          selectedDay.month,
+          selectedDay.day,
+          _random.nextInt(14) + 9,
+          _random.nextInt(60),
+        );
         DateTime endTime = startTime.add(Duration(minutes: duration));
 
         if (startTime.isAfter(now) && endTime.isBefore(endTimeLimit)) {
-          String event = 'Nap (${duration}min)';
+          String event = 'Nap (${endTime.difference(startTime).inMinutes}min)';
 
           final Event addEvent = Event(
             title: event,
@@ -196,13 +202,12 @@ class CalendarScreenState extends State<CalendarScreen> {
           } catch (e) {
             _showErrorDialog('An error occurred: $e');
           }
-        } else if (isSameDay(selectedDay, now)) {
+        } else if (isSameDay(selectedDay, now) && now.hour > endTimeLimit.hour) {
           _showErrorDialog('It\'s too late. You should go to bed! :)');
         }
       }
     }
   }
-
 
   void _showNoDaySelectedDialog() {
     showDialog(
