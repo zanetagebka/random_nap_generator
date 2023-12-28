@@ -61,7 +61,7 @@ class CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
       ),
       body: Stack(
         children: [
@@ -210,8 +210,9 @@ class CalendarScreenState extends State<CalendarScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.lightBlue,
-          title: const Text('Oops!'),
-          content: const Text('Please select a day from the calendar.'),
+          title: const Text('Oops!', style: TextStyle(color: Colors.white)),
+          content: const Text('Please select a day from the calendar.',
+          style: TextStyle(color: Colors.white)),
           actions: [
             TextButton(
               onPressed: () {
@@ -219,7 +220,7 @@ class CalendarScreenState extends State<CalendarScreen> {
               },
               child: const Text(
                 'Sure!',
-                style: TextStyle(color: Colors.black,
+                style: TextStyle(color: Colors.white,
                 fontWeight: FontWeight.w500),
               ),
             ),
@@ -235,8 +236,10 @@ class CalendarScreenState extends State<CalendarScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.lightBlue,
-          title: const Text('Oops!'),
-          content: Text(error),
+          title: const Text('Oops!',
+              style: TextStyle(color: Colors.white)),
+          content: Text(error,
+              style: TextStyle(color: Colors.white)),
           actions: [
             TextButton(
               onPressed: () {

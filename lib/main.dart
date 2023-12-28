@@ -16,7 +16,7 @@ void main() async {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   runApp(MaterialApp(
-    home: isFirstTime
+    home: !isFirstTime
         ? FirstTimeScreen(navigatorKey: navigatorKey)
         : CalendarApp(navigatorKey: navigatorKey),
   ));
